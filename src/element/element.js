@@ -1,13 +1,14 @@
 import Home from "../component/home/Home";
-import CreateCategoryQuestion from "../component/CategoryQuestion/Create";
-import CreateQuestion from "../component/question/Create";
-import CreateExam from "../component/exam/Create";
-import CreateResult from "../component/result/Create";
+import CreateCategoryQuestion from "../component/CategoryQuestion/CreateCategoryQuestion";
+import CreateQuestion from "../component/question/CreateQuestion";
+import CreateExam from "../component/exam/CreateExam";
+import CreateResult from "../component/result/CreateResult";
 import Signup from "../component/auth/Signup";
 import Login from "../component/auth/Login";
 import Exam from "../component/user/exam/Exam";
 import History from "../component/user/exam/History";
 import Point from "../component/user/exam/Point";
+import DashBoard from "../component/admin/DashBoard";
 
 const list_route_public = [
 
@@ -54,28 +55,33 @@ const list_user_route = [
 ];
 
 const list_route_in_dropdown = [
-
+    {
+        name: "Admin",
+        path: '/admin/dashboard',
+        component: <DashBoard />,
+        isProtected: true
+    },
     {
         name: "Create category question",
-        path: '/create-category-question',
+        path: '/admin/create-category-question',
         component: <CreateCategoryQuestion />,
         isProtected: true
     },
     {
         name: "Create question",
-        path: '/create-question',
+        path: '/admin/create-question',
         component: <CreateQuestion />,
         isProtected: true
     },
     {
         name: "Create exam",
-        path: '/create-exam',
+        path: '/admin/create-exam',
         component: <CreateExam />,
         isProtected: true
     },
     {
         name: "Create result",
-        path: '/create-result',
+        path: '/admin/create-result',
         component: <CreateResult />,
         isProtected: true
     },

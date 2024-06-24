@@ -1,5 +1,5 @@
 import rootReducers from "../reducers/index";
-import {configureStore, combineReducers} from "@reduxjs/toolkit"
+import {configureStore} from "@reduxjs/toolkit"
 import {
     persistStore,
     persistReducer,
