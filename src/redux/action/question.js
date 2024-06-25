@@ -9,6 +9,11 @@ const question_action = createSlice({
                 isFetching: false,
                 error: false
             },
+            questions: {
+                data: null,
+                isFetching: false,
+                error: false
+            },
         },
 
         reducers: {
@@ -28,6 +33,21 @@ const question_action = createSlice({
 
 
 
+            getQuestionStart: (state) => {
+                state.questions.isFetching = true;
+            },
+            getQuestionSuccess: (state, action) => {
+                state.questions.isFetching = false;
+                state.questions.data = action.payload;
+                state.questions.error = false;
+            },
+            getQuestionFailed: (state) => {
+                state.questions.isFetching = false;
+                state.questions.error = true;
+            },
+
+
+
         }
     }
 );
@@ -37,6 +57,10 @@ export const {
     getQuestionCreateStart,
     getQuestionCreateSuccess,
     getQuestionCreateFailed,
+
+    getQuestionStart,
+    getQuestionSuccess,
+    getQuestionFailed
 
 
 } = question_action.actions;

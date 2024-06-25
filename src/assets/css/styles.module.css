@@ -7,3 +7,10 @@
 
     padding-top: 50px;
 }
+
+.underline_none{
+    text-decoration: none;
+}
+.purple_color{
+    color: #8e0f8e;
+}

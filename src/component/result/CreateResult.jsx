@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {notify_error, notify_success} from "../../request/function";
-import {create_result} from "../../request/api";
+import {create_result, getData} from "../../request/api";
 import ViewResult from "./ViewResult";
 import styles from "../../assets/css/styles.module.css";
+import {getResultStart, getResultSuccess, getResultFailed}
+from "../../redux/action/result";
 
 const CreateResult = props => {
 
@@ -18,7 +20,6 @@ const CreateResult = props => {
     const handleSubmit_create_result = async (event) => {
         event.preventDefault();//function does have form not refresh
 
-        console.log("run")
         if (!file) {
             notify_error("Non-existent file!!!",2000)
             console.warn("LỖI: File không tồn tại!!!");
@@ -28,8 +29,17 @@ const CreateResult = props => {
             await create_result("/v1/api/create_result", {
                 file : file,
             }, dispatch).then(
-                (data) =>
-                notify_success("Create result successfully",2000));
+                async (data) =>{
+                await getData("/v1/api/get_result", dispatch,
+                getResultStart,
+                getResultSuccess,
+                getResultFailed).then(
+                res=>{
+                    notify_success("Create result successfully",2000);
+                }).catch(error=>{
+                    console.error("err ", error);
+                });
+            });
         }catch (error) {
             notify_error(error.response?.data?.error, 2000);
         }

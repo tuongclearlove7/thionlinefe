@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {notify_error, notify_success} from "../../request/function";
-import {create_exam} from "../../request/api";
+import {create_exam, getData} from "../../request/api";
 import ViewExam from "./ViewExam";
 import styles from "../../assets/css/styles.module.css";
+import {getExamStart, getExamSuccess, getExamFailed}
+from "../../redux/action/exam";
 
 const CreateExam = props => {
 
@@ -17,7 +19,6 @@ const CreateExam = props => {
     const handleSubmit_create_exam = async (event) => {
         event.preventDefault();//function does have form not refresh
 
-        console.log("run")
         if (!file) {
             notify_error("Non-existent file!!!",2000)
             console.warn("LỖI: File không tồn tại!!!");
@@ -27,8 +28,17 @@ const CreateExam = props => {
             await create_exam("/v1/api/create_exam", {
                 file : file,
             }, dispatch).then(
-                (data) =>
-                notify_success("Create exam successfully",2000)
+                 async (data) =>{
+                    await getData("/v1/api/get_exam", dispatch,
+                    getExamStart,
+                    getExamSuccess,
+                    getExamFailed).then(
+                    res=>{
+                        notify_success("Create exam successfully",2000);
+                    }).catch(err=>{
+                        console.error("err ", err);
+                    });
+                }
             );
         }catch (error) {
             notify_error(error.response?.data?.error, 2000);

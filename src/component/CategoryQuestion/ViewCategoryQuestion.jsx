@@ -1,14 +1,37 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import styles from "../../assets/css/styles.module.css"
-import {getCategoryQuestionCreateSuccess} from "../../redux/action/category_question";
+import {getCategoryQuestionCreateSuccess,
+getCategoryQuestionStart, getCategoryQuestionSuccess,
+getCategoryQuestionFailed} from "../../redux/action/category_question";
+import {deleteData, getData} from "../../request/api";
+import Delete from "../admin/Delete";
 
 const ViewCategoryQuestion = props => {
 
     const dispatch = useDispatch();
     const data = useSelector((state) =>
-    state.category_question.category_question_creates?.data);
-    
+    state.category_question.category_questions?.data);
+
+    useEffect(() => {
+        getData("/v1/api/get_category_question", dispatch,
+        getCategoryQuestionStart,
+        getCategoryQuestionSuccess,
+        getCategoryQuestionFailed).then(res=>{
+
+        })
+        .catch(error=>{
+            console.error("err ", error);
+        });
+    }, []);
+
+    useEffect(() => {
+
+        return ()=>{
+            dispatch(getCategoryQuestionSuccess(null));
+        }
+    }, []);
+
     const clearCategoryQuestion = () => {
         dispatch(getCategoryQuestionCreateSuccess(null));
     }
@@ -22,6 +45,7 @@ const ViewCategoryQuestion = props => {
                 </div>
             </div>
             <div className="table-responsive">
+                {data?.length > 0 &&
                 <table className="table table-hover mb-0">
                     <thead>
                     <tr>
@@ -40,12 +64,15 @@ const ViewCategoryQuestion = props => {
                             </td>
                         </tr>)}
                     </tbody>
-                </table>
+                </table>}
             </div>
             <div className={styles.padding_top_20px}>
-                <button onClick={clearCategoryQuestion} className="btn btn-danger">
-                    CLEAR DATA
-                </button>
+                {/*    Delete button */}
+                {data?.length > 0 &&
+                <Delete deleteData={deleteData}
+                 getData={getCategoryQuestionSuccess}
+                 url={"/v1/api/delete_category_question"}/>
+                }
             </div>
         </div>
         }

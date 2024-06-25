@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Logout from "../auth/Logout";
 import {NavLink} from "react-router-dom";
 import DropDown from "./DropDown";
@@ -6,6 +6,17 @@ import element from "../../element/element";
 import UserDropDown from "./UserDropDown";
 
 const Header = props => {
+
+    const [input, setInput] = useState('');
+
+    useEffect(() => {
+
+        document.title = input;
+        if (input.trim() === '') {
+            document.title = "Team1StudyWithMe";
+        }
+    }, [document.title]);
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -58,12 +69,14 @@ const Header = props => {
 
                         </ul>
                         <form className="d-flex" role="search">
-                            <input
-                                className="form-control me-2"
+                            <input className="form-control me-2"
                                 type="search"
                                 placeholder="Search"
                                 aria-label="Search"
-                            />
+                                onChange={event=> {
+                                    setInput(event.target.value);
+                                }
+                            }/>
                             <button className="btn btn-outline-success" type="submit">
                                 Search
                             </button>

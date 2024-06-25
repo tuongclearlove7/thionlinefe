@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import {create_category_question} from "../../request/api";
+import {create_category_question, getData} from "../../request/api";
 import {notify_error, notify_success} from "../../request/function";
 import ViewCategoryQuestion from "./ViewCategoryQuestion";
 import {useDispatch} from "react-redux";
 import styles from "../../assets/css/styles.module.css";
+import {getCategoryQuestionStart, getCategoryQuestionSuccess,
+getCategoryQuestionFailed} from "../../redux/action/category_question";
 
 const CreateCategoryQuestion = props => {
 
@@ -18,7 +20,6 @@ const CreateCategoryQuestion = props => {
     const handleSubmit_create_category_question = async (event) => {
         event.preventDefault();//function does have form not refresh
 
-        console.log("run")
         if (!file) {
             notify_error("Non-existent file!!!",2000)
             console.warn("LỖI: File không tồn tại!!!");
@@ -28,8 +29,17 @@ const CreateCategoryQuestion = props => {
             await create_category_question("/v1/api/create_category_question", {
                 file : file,
             }, dispatch).then(
-                (data) =>
-                notify_success("Create category question successfully",2000)
+                async (data) =>{
+                    await getData("/v1/api/get_category_question", dispatch,
+                    getCategoryQuestionStart,
+                    getCategoryQuestionSuccess,
+                    getCategoryQuestionFailed).then(
+                    res=>{
+                        notify_success("Create category question successfully",2000);
+                    }).catch(error=>{
+                        console.error("err ", error);
+                    });
+                }
             );
         }catch (error) {
             notify_error(error.response?.data?.error, 2000);

@@ -9,6 +9,12 @@ const result_action = createSlice({
                 isFetching: false,
                 error: false
             },
+
+            results: {
+                data: null,
+                isFetching: false,
+                error: false
+            },
         },
 
         reducers: {
@@ -27,6 +33,20 @@ const result_action = createSlice({
             },
 
 
+            getResultStart: (state) => {
+                state.results.isFetching = true;
+            },
+            getResultSuccess: (state, action) => {
+                state.results.isFetching = false;
+                state.results.data = action.payload;
+                state.results.error = false;
+            },
+            getResultFailed: (state) => {
+                state.results.isFetching = false;
+                state.results.error = true;
+            },
+
+
 
         }
     }
@@ -37,6 +57,11 @@ export const {
     getResultCreateStart,
     getResultCreateSuccess,
     getResultCreateFailed,
+
+
+    getResultStart,
+    getResultSuccess,
+    getResultFailed
 
 } = result_action.actions;
 

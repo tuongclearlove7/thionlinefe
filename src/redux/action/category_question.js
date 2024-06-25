@@ -9,6 +9,12 @@ const category_question_action = createSlice({
                 isFetching: false,
                 error: false
             },
+
+            category_questions: {
+                data: null,
+                isFetching: false,
+                error: false
+            },
         },
 
         reducers: {
@@ -27,6 +33,20 @@ const category_question_action = createSlice({
             },
 
 
+            getCategoryQuestionStart: (state) => {
+                state.category_questions.isFetching = true;
+            },
+            getCategoryQuestionSuccess: (state, action) => {
+                state.category_questions.isFetching = false;
+                state.category_questions.data = action.payload;
+                state.category_questions.error = false;
+            },
+            getCategoryQuestionFailed: (state) => {
+                state.category_questions.isFetching = false;
+                state.category_questions.error = true;
+            },
+
+
 
         }
     }
@@ -37,6 +57,10 @@ export const {
     getCategoryQuestionCreateStart,
     getCategoryQuestionCreateSuccess,
     getCategoryQuestionCreateFailed,
+
+    getCategoryQuestionStart,
+    getCategoryQuestionSuccess,
+    getCategoryQuestionFailed
 
 
 } = category_question_action.actions;

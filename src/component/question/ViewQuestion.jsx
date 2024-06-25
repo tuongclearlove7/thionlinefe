@@ -1,13 +1,38 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import styles from "../../assets/css/styles.module.css";
-import {getQuestionCreateSuccess} from "../../redux/action/question";
+import {getQuestionCreateSuccess,
+getQuestionStart, getQuestionSuccess,
+getQuestionFailed} from "../../redux/action/question";
+import {deleteData, getData} from "../../request/api";
+import Delete from "../admin/Delete";
 
 const ViewQuestion = props => {
 
     const dispatch = useDispatch();
     const data = useSelector((state) =>
-    state.question.question_creates?.data);
+    state.question.questions?.data);
+
+    useEffect(() => {
+        getData("/v1/api/get_question", dispatch,
+        getQuestionStart,
+        getQuestionSuccess,
+        getQuestionFailed).then(
+        res=>{
+
+        }).catch(
+            err => {
+                console.error("err ",err)
+            }
+        );
+    }, []);
+
+    useEffect(() => {
+
+        return ()=>{
+            dispatch(getQuestionSuccess(null));
+        }
+    }, []);
 
     const clearQuestion = () => {
         dispatch(getQuestionCreateSuccess(null));
@@ -22,6 +47,7 @@ const ViewQuestion = props => {
                 </div>
             </div>
             <div className="table-responsive">
+                {data?.length > 0 &&
                 <table className="table table-hover mb-0">
                     <thead>
                     <tr>
@@ -58,12 +84,15 @@ const ViewQuestion = props => {
                             <td>{item?.note}</td>
                         </tr>)}
                     </tbody>
-                </table>
+                </table>}
             </div>
             <div className={styles.padding_top_20px}>
-                <button onClick={clearQuestion} className="btn btn-danger">
-                    CLEAR DATA
-                </button>
+                {/*    Delete button */}
+                {data?.length > 0 &&
+                <Delete deleteData={deleteData}
+                getData={getQuestionSuccess}
+                url={"/v1/api/delete_question"}
+                />}
             </div>
         </div>
         }
@@ -71,8 +100,6 @@ const ViewQuestion = props => {
     );
 };
 
-ViewQuestion.propTypes = {
-
-};
+ViewQuestion.propTypes = {};
 
 export default ViewQuestion;

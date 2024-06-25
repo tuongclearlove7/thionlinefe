@@ -9,6 +9,7 @@ import Exam from "../component/user/exam/Exam";
 import History from "../component/user/exam/History";
 import Point from "../component/user/exam/Point";
 import DashBoard from "../component/admin/DashBoard";
+import StructureExam from "../component/structure/StructureExam";
 
 const list_route_public = [
 
@@ -83,6 +84,12 @@ const list_route_in_dropdown = [
         name: "Create result",
         path: '/admin/create-result',
         component: <CreateResult />,
+        isProtected: true
+    },
+    {
+        name: "Structure exam",
+        path: '/admin/structure-exam',
+        component: <StructureExam />,
         isProtected: true
     },
 ];

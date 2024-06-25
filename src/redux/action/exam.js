@@ -9,6 +9,13 @@ const exam_action = createSlice({
                 isFetching: false,
                 error: false
             },
+
+            exams: {
+                data: null,
+                isFetching: false,
+                error: false
+            },
+
         },
 
         reducers: {
@@ -27,6 +34,20 @@ const exam_action = createSlice({
             },
 
 
+            getExamStart: (state) => {
+                state.exams.isFetching = true;
+            },
+            getExamSuccess: (state, action) => {
+                state.exams.isFetching = false;
+                state.exams.data = action.payload;
+                state.exams.error = false;
+            },
+            getExamFailed: (state) => {
+                state.exams.isFetching = false;
+                state.exams.error = true;
+            },
+
+
 
         }
     }
@@ -37,6 +58,10 @@ export const {
     getExamCreateStart,
     getExamCreateSuccess,
     getExamCreateFailed,
+
+    getExamStart,
+    getExamSuccess,
+    getExamFailed
 
 } = exam_action.actions;
 
